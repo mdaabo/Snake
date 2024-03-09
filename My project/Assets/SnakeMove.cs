@@ -36,40 +36,59 @@ public class SnakeMove : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && goingDown == false)
         {
             direction = Vector2.up;
+            goingUp = true;
+            goingLeft = false;
+            goingDown = false;
+            goingRight = false;
+
+
+
         }
 
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A) && goingRight == false)
         {
             direction = Vector2.left;
-
+            goingUp = false;
+            goingLeft = true;
+            goingDown = false;
+            goingRight = false;
         }
 
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) && goingUp != true)
 
         {
             direction = Vector2.down;
-
+            goingUp = false;
+            goingLeft = false;
+            goingDown = true;
+            goingRight = false;
         }
 
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && goingLeft == false)
         {
             direction = Vector2.right;
+            goingUp = false;
+            goingLeft = false;
+            goingDown = false;
+            goingRight = true;
         }
 
 
 
     }
 
-        void FixedUpdate() { 
-        for (int i = segments.Count - 1; i > 0; i--) 
-        
+    void FixedUpdate()
+    {
+        for (int i = segments.Count - 1; i > 0; i--)
+
         {
-            segments[i].position =segments[i - 1].position;
-        
+            segments[i].position = segments[i - 1].position;
+
         }
 
 
@@ -85,9 +104,9 @@ public class SnakeMove : MonoBehaviour
 
     void Grow()
     {
-       Transform segment = Instantiate(this.bodyPrefab);
+        Transform segment = Instantiate(this.bodyPrefab);
         segment.position = segments[segments.Count - 1].position;
-        segments.Add (segment);
+        segments.Add(segment);
     }
 
 
@@ -108,8 +127,9 @@ public class SnakeMove : MonoBehaviour
         {
             Debug.Log("hit");
             Grow();
+            Time.fixedDeltaTime -= 0.001f;
         }
-        else if(other.tag =="Obstacle")
+        else if (other.tag == "Obstacle")
         {
             SceneManager.LoadScene("EndScene");
         }
